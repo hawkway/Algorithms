@@ -16,12 +16,12 @@ class Sort
         Sort();
         ~Sort();
         static void insertionSort(T input[], int len);
-        static void mergeSort(T input[], len);
+        static void mergeSort(T input[], int len, string id);
 
     // set private member functions
     private:
         static void findMin(T input[], int len);
-        static void merge(T left[], T right[], T combined[]);
+        static void merge(T left[], T right[], T combined[], int leftSize, int rightSize);
 
 };
 //----------------------------------------------------------------
@@ -85,51 +85,55 @@ void Sort<T>::findMin(T input[], int len)
 } // find min
 //----------------------------------------------------------------
 template<typename T>
-void Sort<T>::mergeSort(T input[], len)
+void Sort<T>::mergeSort(T input[], int len, string id)
 {
-    // get num of array elements
-    int arrLen = sizeof(input)/sizeof(input[0]);
-
-    if (arrLen > 1)
+    printf("enter mergeSort(%s)\n", id.c_str());
+    if (len > 1)
     {
         // get size of left sub array
-        int leftSize = floor(arrLen/2);
+        int leftSize = floor(len/2);
+        cout << "leftSize = " << leftSize << "\n";
         // get size of right sub array
-        int rightSize = arrLen - ((floor(arrLen/2))+1);
-        int rightStart = (floor(arrLen/2))+1;
+        int rightSize = len - (floor(len/2)+1);
+        cout << "rightSize = " << rightSize << "\n";
+        int rightStart = (floor(len/2))+1;
         // create new sub arrays
         T left[leftSize] = {0};
         T right[rightSize] = {0};
-        T combined[arrLen] = {0};
+        T combined[len] = {0};
         // divide array
         // make left array
         for (int i = 0; i < leftSize; i++)
         {
             left[i] = input[i];
-            cout << "left[" << i << "] = input[] = " << input[i] << "\n";
+            printf("left[%d] = input[%d] = %d\n", i, i, input[i]);
         }
         // make right array
         for (int i = rightStart; i < rightSize; i++)
         {
             right[i] = input[i];
-            cout << "right[" << i << "] = input[] = " << input[i] << "\n";
+            printf("right[%d] = input[%d] = %d\n", i, i, input[i]);
         }
 
         // send arrays for division
-        mergeSort(left);
-        mergeSort(right);
+        mergeSort(left, leftSize, "left");
+        mergeSort(right, rightSize, "right");
         // merge sorted arrays
-        merge(left, right, combined);
+        merge(left, right, combined, leftSize, rightSize);
 
-    } // if 
+        for (int i = 0; i < len; i++)
+            printf("combined[%d] = %d\n", i, combined[i]);
+
+        cout << "\n\n";
+    } // if
+    else
+        cout << "len <= 1\n";
 } // mergeSort
 //----------------------------------------------------------------
 template <typename T>
-void Sort<T>::merge(T left[], T right[], T combined[])
+void Sort<T>::merge(T left[], T right[], T combined[], int leftSize, int rightSize)
 {
     // get size of arrays
-    int leftSize = sizeof(left)/sizeof(left[0]);
-    int rightSize = sizeof(right)/sizeof(right[0]);
     int combinedSize = leftSize + rightSize;
     // init counters outside of loop
     int i = 0;
