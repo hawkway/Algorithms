@@ -15,13 +15,13 @@ class Sort
     public:
         Sort();
         ~Sort();
+        static void printArray(T input[], int len);
         static void insertionSort(T input[], int len);
         static void mergeSort(T input[], int len, string id);
 
     // set private member functions
     private:
-        static void findMin(T input[], int len);
-        static void printArray(T input[], int len);
+        static void findMin(T input[], int len);        
         static void merge(T left[], T right[], T combined[], int leftSize, int rightSize);
 
 };
