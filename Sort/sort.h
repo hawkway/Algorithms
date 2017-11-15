@@ -21,6 +21,7 @@ class Sort
     // set private member functions
     private:
         static void findMin(T input[], int len);
+        static void printArray(T input[], int len);
         static void merge(T left[], T right[], T combined[], int leftSize, int rightSize);
 
 };
@@ -87,16 +88,18 @@ void Sort<T>::findMin(T input[], int len)
 template<typename T>
 void Sort<T>::mergeSort(T input[], int len, string id)
 {
-    printf("enter mergeSort(%s)\n", id.c_str());
+    printf("\nenter mergeSort(%s)\n", id.c_str());
     if (len > 1)
     {
+        cout << "printing array for debug purposes:\n";
+        printArray(input, len);
         // get size of left sub array
         int leftSize = floor(len/2);
         cout << "leftSize = " << leftSize << "\n";
         // get size of right sub array
-        int rightSize = len - (floor(len/2)+1);
+        int rightSize = len - (floor(len/2));
         cout << "rightSize = " << rightSize << "\n";
-        int rightStart = (floor(len/2))+1;
+        int rightStart = (floor(len/2));
         // create new sub arrays
         T left[leftSize] = {0};
         T right[rightSize] = {0};
@@ -109,10 +112,10 @@ void Sort<T>::mergeSort(T input[], int len, string id)
             printf("left[%d] = input[%d] = %d\n", i, i, input[i]);
         }
         // make right array
-        for (int i = rightStart; i < rightSize; i++)
+        for (int i = 0; i < rightSize; i++)
         {
-            right[i] = input[i];
-            printf("right[%d] = input[%d] = %d\n", i, i, input[i]);
+            right[i] = input[rightStart + i];
+            printf("right[%d] = input[%d] = %d\n", i, rightStart+i, input[rightStart + i]);
         }
 
         // send arrays for division
@@ -139,7 +142,7 @@ void Sort<T>::merge(T left[], T right[], T combined[], int leftSize, int rightSi
     int i = 0;
     int j = 0;
     // merge two arrays into one
-    for (int k = 0; i < combinedSize; k++)
+    for (int k = 0; k < combinedSize; k++)
     {
         if ((i <= leftSize) && (j <= rightSize) && (left[i] <= right[j]))
         {
@@ -148,7 +151,7 @@ void Sort<T>::merge(T left[], T right[], T combined[], int leftSize, int rightSi
             combined[k] = left[i];
             i++;
         }
-        else if ((i <= leftSize) && (j <= rightSize) && (left[i] <= right[j]))
+        else if ((i <= leftSize) && (j <= rightSize) && (right[j] < left[i]))
         {
             // verify arrays are in bounds
             // if right is smaller
@@ -157,5 +160,12 @@ void Sort<T>::merge(T left[], T right[], T combined[], int leftSize, int rightSi
         }
     } // for
 } // merge
+//----------------------------------------------------------------
+template <typename T>
+void Sort<T>::printArray(T input[], int len)
+{
+    for (int i = 0; i < len; i++)
+        cout << "array[" << i << "] = " << input[i] << "\n";
+} // printArray
 //----------------------------------------------------------------
 #endif
